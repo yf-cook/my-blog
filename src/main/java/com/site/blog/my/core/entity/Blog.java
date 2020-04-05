@@ -4,34 +4,51 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
 
+/**
+ * 博客表实体类
+ */
 public class Blog {
+    //博客表主键id
     private Long blogId;
 
+    //博客标题
     private String blogTitle;
 
+    //博客自定义路径url
     private String blogSubUrl;
 
+    //博客封面图
     private String blogCoverImage;
 
+    //博客分类id
     private Integer blogCategoryId;
 
+    //博客分类名称
     private String blogCategoryName;
 
+    //博客标签
     private String blogTags;
 
+    //博客发布状态，0代表草稿，1代表已发布
     private Byte blogStatus;
 
+    //博客阅读量
     private Long blogViews;
 
+    //博客是否允许评论，0允许评论，1不允许评论
     private Byte enableComment;
 
+    //博客是否删除，0代表否，1代表是
     private Byte isDeleted;
 
+    //博客发布时间
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;
 
+    //博客修改时间
     private Date updateTime;
 
+    //博客内容
     private String blogContent;
 
     public Long getBlogId() {

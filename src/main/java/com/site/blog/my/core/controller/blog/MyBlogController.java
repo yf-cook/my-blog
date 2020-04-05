@@ -19,9 +19,10 @@ import java.util.Map;
 @Controller
 public class MyBlogController {
 
-    //public static String theme = "default";
+    //public static String theme="beauty";
+    public static String theme = "default";
     //public static String theme = "yummy-jekyll";
-    public static String theme = "amaze";
+    //public static String theme = "amaze";
     @Resource
     private BlogService blogService;
     @Resource
@@ -47,15 +48,18 @@ public class MyBlogController {
 
     /**
      * 首页 分页数据
+     * @GetMapping({"/page/{pageNum}"})中的pageNum与@PathVariable("pageNum")中的pageNum必须一样，和int pageNum
      *
      * @return
      */
     @GetMapping({"/page/{pageNum}"})
     public String page(HttpServletRequest request, @PathVariable("pageNum") int pageNum) {
+        //查询当前页的博客文章
         PageResult blogPageResult = blogService.getBlogsForIndexPage(pageNum);
         if (blogPageResult == null) {
             return "error/error_404";
         }
+        //将查询出来的博客文章存入blogPageResult当中，前端可以根据此接口获取数据
         request.setAttribute("blogPageResult", blogPageResult);
         request.setAttribute("newBlogs", blogService.getBlogListForIndexPage(1));
         request.setAttribute("hotBlogs", blogService.getBlogListForIndexPage(0));
@@ -87,6 +91,7 @@ public class MyBlogController {
      */
     @GetMapping({"/blog/{blogId}", "/article/{blogId}"})
     public String detail(HttpServletRequest request, @PathVariable("blogId") Long blogId, @RequestParam(value = "commentPage", required = false, defaultValue = "1") Integer commentPage) {
+        //通过id查询该博客文章的内容
         BlogDetailVO blogDetailVO = blogService.getBlogDetail(blogId);
         if (blogDetailVO != null) {
             request.setAttribute("blogDetailVO", blogDetailVO);

@@ -2,13 +2,20 @@ package com.site.blog.my.core.entity;
 
 import java.util.Date;
 
+/**
+ * 博客配置表实体类
+ */
 public class BlogConfig {
+    //配置项的名称
     private String configName;
 
+    //配置项的值
     private String configValue;
 
+    //创建时间
     private Date createTime;
 
+    //修改时间
     private Date updateTime;
 
     public String getConfigName() {

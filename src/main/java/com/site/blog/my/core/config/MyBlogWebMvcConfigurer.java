@@ -7,6 +7,9 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+/**
+ * @Configuration：指明当前类是一个配置类，可以代替以前的spring配置文件
+ */
 @Configuration
 public class MyBlogWebMvcConfigurer implements WebMvcConfigurer {
 
@@ -20,6 +23,7 @@ public class MyBlogWebMvcConfigurer implements WebMvcConfigurer {
 
 
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/upload/**").addResourceLocations("file:" + Constants.FILE_UPLOAD_DIC);
+        //registry.addResourceHandler("/upload/**").addResourceLocations("file:" + Constants.FILE_UPLOAD_DIC);
+        registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
     }
 }

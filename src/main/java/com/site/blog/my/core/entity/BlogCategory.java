@@ -4,17 +4,26 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
 
+/**
+ * 博客分类表
+ */
 public class BlogCategory {
+    //分类表id
     private Integer categoryId;
 
+    //分类的名称
     private String categoryName;
 
+    //分类的图标
     private String categoryIcon;
 
+    //分类的排序值
     private Integer categoryRank;
 
+    //分类是否删除，0=否，1=是
     private Byte isDeleted;
 
+    //分类创建时间
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;
 
