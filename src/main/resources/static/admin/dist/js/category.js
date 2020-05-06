@@ -82,6 +82,7 @@ $('#saveButton').click(function () {
         $('#edit-error-msg').css("display", "block");
         $('#edit-error-msg').html("请输入符合规范的分类名称！");
     } else {
+        //将表单内容序列化成一个字符串
         var params = $("#categoryForm").serialize();
         var url = '/admin/categories/save';
         var id = getSelectedRowWithoutAlert();
@@ -117,12 +118,21 @@ $('#saveButton').click(function () {
     }
 });
 
+
 function categoryEdit() {
-    reset();
     var id = getSelectedRow();
     if (id == null) {
         return;
     }
+    reset();
+    //请求数据
+    $.get("/admin/categories/info/" + id, function (r) {
+        if (r.resultCode == 200 && r.data != null) {
+            //填充数据至modal
+            $("#categoryName").val(r.data.categoryName);
+            $("#categoryIcon").val(r.data.categoryIcon);
+        }
+    });
     $('.modal-title').html('分类编辑');
     $('#categoryModal').modal('show');
     $("#categoryId").val(id);
@@ -165,7 +175,10 @@ function deleteCagegory() {
 }
 
 
+
 function reset() {
     $("#categoryName").val('');
+    //将上次上次错误信息隐藏
+    $('#edit-error-msg').css("display", "none");
     $("#categoryIcon option:first").prop("selected", 'selected');
 }

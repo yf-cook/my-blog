@@ -118,6 +118,7 @@ function validPassword(password) {
  */
 function getSelectedRow() {
     var grid = $("#jqGrid");
+    //获取选中行的id
     var rowKey = grid.getGridParam("selrow");
     if (!rowKey) {
         swal("请选择一条记录", {
@@ -125,6 +126,7 @@ function getSelectedRow() {
         });
         return;
     }
+    //获取选中行的id,返回的是一个数组
     var selectedIDs = grid.getGridParam("selarrrow");
     if (selectedIDs.length > 1) {
         swal("只能选择一条记录", {

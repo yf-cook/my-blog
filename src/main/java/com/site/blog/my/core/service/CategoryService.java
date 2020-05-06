@@ -16,6 +16,8 @@ public interface CategoryService {
      */
     PageResult getBlogCategoryPage(PageQueryUtil pageUtil);
 
+    BlogCategory selectById(Integer id);
+
     int getTotalCategories();
 
     /**

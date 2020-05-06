@@ -1,5 +1,6 @@
 package com.site.blog.my.core.controller.admin;
 
+import com.site.blog.my.core.entity.BlogCategory;
 import com.site.blog.my.core.service.CategoryService;
 import com.site.blog.my.core.util.PageQueryUtil;
 import com.site.blog.my.core.util.Result;
@@ -24,6 +25,13 @@ public class CategoryController {
     public String categoryPage(HttpServletRequest request) {
         request.setAttribute("path", "categories");
         return "admin/category";
+    }
+
+    @GetMapping("/categories/info/{id}")
+    @ResponseBody
+    public Result info(@PathVariable("id") Integer id){
+        BlogCategory blogCategory = categoryService.selectById(id);
+        return ResultGenerator.genSuccessResult(blogCategory);
     }
 
     /**

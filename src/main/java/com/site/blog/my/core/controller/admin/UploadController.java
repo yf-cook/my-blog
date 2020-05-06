@@ -31,6 +31,7 @@ public class UploadController {
     @ResponseBody
     public Result upload(HttpServletRequest httpServletRequest, @RequestParam("file") MultipartFile file) throws URISyntaxException {
         String fileName = file.getOriginalFilename();
+        //获取上传文件的后缀名
         String suffixName = fileName.substring(fileName.lastIndexOf("."));
         //生成文件名称通用方法
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.site.blog.my.core.dao.BlogToolMapper">
+    <resultMap id="BaseResultMap" type="com.site.blog.my.core.entity.BlogTool">
+        <id column="tool_id" jdbcType="INTEGER" property="toolId"></id>
+        <result column="tool_name" jdbcType="VARCHAR" property="toolName"></result>
+        <result column="tool_url" jdbcType="VARCHAR" property="toolUrl"></result>
+        <result column="tool_description" jdbcType="VARCHAR" property="toolDescription"></result>
+        <result column="is_deleted" jdbcType="TINYINT" property="isDeleted"></result>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"></result>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        tool_id, tool_name, tool_url, tool_description, is_deleted, create_time
+    </sql>
+
+
+
+    <insert id="insert">
+        insert into tb_tool (tool_id, tool_name, tool_url, tool_description, is_deleted, create_time)
+        values (#{toolId,jdbcType=INTEGER}, #{toolName,jdbcType=VARCHAR}, #{toolUrl,jdbcType=VARCHAR},
+                #{toolDescription,jdbcType=VARCHAR}, #{isDeleted,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    <insert id="insertSelective">
+        insert into tb_tool
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="toolId != null">
+                tool_id,
+            </if>
+            <if test="toolName != null">
+                tool_name,
+            </if>
+            <if test="toolUrl != null">
+                tool_url,
+            </if>
+            <if test="toolDescription != null">
+                tool_description,
+            </if>
+            <if test="isDeleted != null">
+                is_deleted,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="toolId != null">
+                #{toolId,jdbcType=INTEGER},
+            </if>
+            <if test="toolName != null">
+                #{toolName,jdbcType=VARCHAR},
+            </if>
+            <if test="toolUrl != null">
+                #{toolUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="toolDescription != null">
+                #{toolDescription,jdbcType=VARCHAR},
+            </if>
+            <if test="isDeleted != null">
+                #{isDeleted,jdbcType=TINYINT},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.site.blog.my.core.entity.BlogTool">
+        update tb_tool
+        <set>
+            <if test="toolName != null">
+                tool_name = #{toolName,jdbcType=VARCHAR},
+            </if>
+            <if test="toolUrl != null">
+                tool_url = #{toolUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="toolDescription != null">
+                tool_description = #{toolDescription,jdbcType=VARCHAR},
+            </if>
+            <if test="isDeleted != null">
+                is_deleted = #{isDeleted,jdbcType=TINYINT},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where tool_id = #{toolId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.site.blog.my.core.entity.BlogTool">
+        update tb_tool
+        set tool_name = #{toolName,jdbcType=VARCHAR},
+            tool_url = #{toolUrl,jdbcType=VARCHAR},
+            tool_description = #{toolDescription,jdbcType=VARCHAR},
+            is_deleted = #{isDeleted,jdbcType=TINYINT},
+            create_time = #{createTime,jdbcType=TIMESTAMP}
+        where tool_id = #{toolId,jdbcType=INTEGER}
+    </update>
+
+    <update id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        update tb_tool
+        set is_deleted = 1
+        where tool_id = #{toolId,jdbcType=INTEGER} AND is_deleted = 0
+    </update>
+    <update id="deleteBatch">
+        update tb_tool
+        set is_deleted = 1
+        where tool_id in
+        <foreach collection="array" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from tb_tool
+        where tool_id = #{toolId,jdbcType=INTEGER} AND is_deleted = 0
+    </select>
+    <select id="findToolList" parameterType="map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from tb_tool
+        where is_deleted = 0
+        order by tool_id desc
+        <if test="start != null and limit != null">
+            limit #{start}, #{limit}
+        </if>
+    </select>
+    <select id="getTotalTools" parameterType="map" resultType="java.lang.Integer">
+        select count(*) from tb_tool
+        where is_deleted = 0
+    </select>
+</mapper>

@@ -10,6 +10,9 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+/**
+ * 管理员相关功能模块
+ */
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
@@ -51,6 +54,14 @@ public class AdminController {
         return "admin/index";
     }
 
+    /**
+     * 博主登录模块
+     * @param userName
+     * @param password
+     * @param verifyCode
+     * @param session
+     * @return
+     */
     @PostMapping(value = "/login")
     public String login(@RequestParam("userName") String userName,
                         @RequestParam("password") String password,

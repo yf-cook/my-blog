@@ -32,6 +32,7 @@
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>
+
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">

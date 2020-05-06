@@ -20,7 +20,7 @@ public class ConfigServiceImpl implements ConfigService {
     public static final String websiteName = "personal blog";
     public static final String websiteDescription = "personal blog是SpringBoot2+Thymeleaf+Mybatis建造的个人博客网站.SpringBoot实战博客源码.个人博客搭建";
     public static final String websiteLogo = "/admin/dist/img/logo2.png";
-    public static final String websiteIcon = "/admin/dist/img/favicon.png";
+    public static final String websiteIcon = "/admin/dist/img/fac.png";
 
     public static final String yourAvatar = "/admin/dist/img/13.png";
     public static final String yourEmail = "252065840@qq.com";
@@ -48,8 +48,10 @@ public class ConfigServiceImpl implements ConfigService {
     public Map<String, String> getAllConfigs() {
         //获取所有的map并封装为map
         List<BlogConfig> blogConfigs = configMapper.selectAll();
+        //此处采用java8新语法，Stream()流操作,创建一个映射
         Map<String, String> configMap = blogConfigs.stream().collect(Collectors.toMap(BlogConfig::getConfigName, BlogConfig::getConfigValue));
         for (Map.Entry<String, String> config : configMap.entrySet()) {
+            //下面进行一些配置的验证
             if ("websiteName".equals(config.getKey()) && StringUtils.isEmpty(config.getValue())) {
                 config.setValue(websiteName);
             }

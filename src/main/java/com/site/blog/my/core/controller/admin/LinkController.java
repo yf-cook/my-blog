@@ -30,6 +30,7 @@ public class LinkController {
     @GetMapping("/links/list")
     @ResponseBody
     public Result list(@RequestParam Map<String, Object> params) {
+        System.out.println("===============page:"+params.get("page")+"=========limit:"+params.get("limit"));
         if (StringUtils.isEmpty(params.get("page")) || StringUtils.isEmpty(params.get("limit"))) {
             return ResultGenerator.genFailResult("参数异常！");
         }

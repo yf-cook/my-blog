@@ -4,6 +4,7 @@ import com.site.blog.my.core.controller.vo.BlogDetailVO;
 import com.site.blog.my.core.entity.BlogComment;
 import com.site.blog.my.core.entity.BlogLink;
 import com.site.blog.my.core.entity.BlogTagCount;
+import com.site.blog.my.core.entity.BlogTool;
 import com.site.blog.my.core.service.*;
 import com.site.blog.my.core.util.*;
 import org.springframework.stereotype.Controller;
@@ -30,6 +31,8 @@ public class MyBlogController {
     @Resource
     private LinkService linkService;
     @Resource
+    private ToolService toolService;
+    @Resource
     private CommentService commentService;
     @Resource
     private ConfigService configService;
@@ -48,7 +51,7 @@ public class MyBlogController {
 
     /**
      * 首页 分页数据
-     * @GetMapping({"/page/{pageNum}"})中的pageNum与@PathVariable("pageNum")中的pageNum必须一样，和int pageNum
+     * @GetMapping({"/page/{pageNum}"})中的pageNum与@PathVariable("pageNum")中的pageNum必须一样，和int pageNum可以不一样
      *
      * @return
      */
@@ -61,11 +64,18 @@ public class MyBlogController {
         }
         //将查询出来的博客文章存入blogPageResult当中，前端可以根据此接口获取数据
         request.setAttribute("blogPageResult", blogPageResult);
+        //获取最新发布的博客文章，type为1代表最新发布
         request.setAttribute("newBlogs", blogService.getBlogListForIndexPage(1));
+        //获取点击量做多的博客文章，type为0代表点击量最多
         request.setAttribute("hotBlogs", blogService.getBlogListForIndexPage(0));
+        //获取标签
         List<BlogTagCount> blogTagCountForIndex = tagService.getBlogTagCountForIndex();
         request.setAttribute("hotTags", blogTagCountForIndex);
+        //获取在线工具
+        List<BlogTool> blogTools = toolService.getBlogToolList();
+        request.setAttribute("blogTools",blogTools);
         request.setAttribute("pageName", "首页");
+        //页面获取的一些配置值
         request.setAttribute("configurations", configService.getAllConfigs());
         return "blog/" + theme + "/index";
     }
@@ -95,6 +105,7 @@ public class MyBlogController {
         BlogDetailVO blogDetailVO = blogService.getBlogDetail(blogId);
         if (blogDetailVO != null) {
             request.setAttribute("blogDetailVO", blogDetailVO);
+            //查询评论信息
             request.setAttribute("commentPageResult", commentService.getCommentPageByBlogIdAndPageNum(blogId, commentPage));
         }
         request.setAttribute("pageName", "详情");
@@ -127,6 +138,7 @@ public class MyBlogController {
         request.setAttribute("newBlogs", blogService.getBlogListForIndexPage(1));
         request.setAttribute("hotBlogs", blogService.getBlogListForIndexPage(0));
         request.setAttribute("hotTags", tagService.getBlogTagCountForIndex());
+
         request.setAttribute("configurations", configService.getAllConfigs());
         return "blog/" + theme + "/list";
     }
@@ -177,6 +189,7 @@ public class MyBlogController {
      */
     @GetMapping({"/search/{keyword}/{page}"})
     public String search(HttpServletRequest request, @PathVariable("keyword") String keyword, @PathVariable("page") Integer page) {
+        //根据关键字进行查询，查询出来封装成PageResult对象
         PageResult blogPageResult = blogService.getBlogsPageBySearch(keyword, page);
         request.setAttribute("blogPageResult", blogPageResult);
         request.setAttribute("pageName", "搜索");
@@ -198,6 +211,7 @@ public class MyBlogController {
     @GetMapping({"/link"})
     public String link(HttpServletRequest request) {
         request.setAttribute("pageName", "友情链接");
+        //根据type进行对友链进行分类
         Map<Byte, List<BlogLink>> linkMap = linkService.getLinksForLinkPage();
         if (linkMap != null) {
             //判断友链类别并封装数据 0-友链 1-推荐 2-个人网站
@@ -211,6 +225,7 @@ public class MyBlogController {
                 request.setAttribute("personalLinks", linkMap.get((byte) 2));
             }
         }
+        //网站的基本配置信息
         request.setAttribute("configurations", configService.getAllConfigs());
         return "blog/" + theme + "/link";
     }
@@ -219,12 +234,12 @@ public class MyBlogController {
      * 评论操作
      * @param request
      * @param session 此处的session保存了生成验证码的字符串，可以在此进行验证
-     * @param blogId
-     * @param verifyCode
-     * @param commentator
-     * @param email
-     * @param websiteUrl
-     * @param commentBody
+     * @param blogId 评论博客文章的id
+     * @param verifyCode 验证码
+     * @param commentator 评论者名字
+     * @param email 邮箱地址
+     * @param websiteUrl 网址
+     * @param commentBody 评论内容
      * @return
      */
     @PostMapping(value = "/blog/comment")
@@ -234,6 +249,7 @@ public class MyBlogController {
                           @RequestParam String commentator, @RequestParam String email,
                           @RequestParam String websiteUrl, @RequestParam String commentBody) {
         if (StringUtils.isEmpty(verifyCode)) {
+            //通过工具类来相应结果
             return ResultGenerator.genFailResult("验证码不能为空");
         }
         String kaptchaCode = session.getAttribute("verifyCode") + "";
@@ -243,6 +259,7 @@ public class MyBlogController {
         if (!verifyCode.equals(kaptchaCode)) {
             return ResultGenerator.genFailResult("验证码错误");
         }
+        //http://localhost:28083/blog/{id}
         String ref = request.getHeader("Referer");
         if (StringUtils.isEmpty(ref)) {
             return ResultGenerator.genFailResult("非法请求");

@@ -1,7 +1,7 @@
 $(function () {
     //修改站点信息
     $('#updateWebsiteButton').click(function () {
-        $("#updateWebsiteButton").attr("disabled", true);
+        // $("#updateWebsiteButton").attr("disabled", true);
         //ajax提交数据
         var params = $("#websiteForm").serialize();
         $.ajax({
@@ -30,7 +30,7 @@ $(function () {
     });
     //个人信息
     $('#updateUserInfoButton').click(function () {
-        $("#updateUserInfoButton").attr("disabled", true);
+        // $("#updateUserInfoButton").attr("disabled", true);
         var params = $("#userInfoForm").serialize();
         $.ajax({
             type: "POST",
@@ -58,7 +58,7 @@ $(function () {
     });
     //修改底部设置
     $('#updateFooterButton').click(function () {
-        $("#updateFooterButton").attr("disabled", true);
+        // $("#updateFooterButton").attr("disabled", true);
         var params = $("#footerForm").serialize();
         $.ajax({
             type: "POST",

@@ -50,7 +50,7 @@ public class BlogServiceImpl implements BlogService {
             //分类的排序值加1
             blogCategory.setCategoryRank(blogCategory.getCategoryRank() + 1);
         }
-        //处理标签数据
+        //处理标签数据,以逗号进行分割
         String[] tags = blog.getBlogTags().split(",");
         if (tags.length > 6) {
             return "标签数量限制为6";
@@ -187,11 +187,13 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public PageResult getBlogsForIndexPage(int page) {
         Map params = new HashMap();
+        //显示第几页
         params.put("page", page);
         //每页8条
         params.put("limit", 8);
         params.put("blogStatus", 1);//过滤发布状态下的数据
         PageQueryUtil pageUtil = new PageQueryUtil(params);
+        //分页查询博客文章
         List<Blog> blogList = blogMapper.findBlogList(pageUtil);
         List<BlogListVO> blogListVOS = getBlogListVOsByBlogs(blogList);
         int total = blogMapper.getTotalBlogs(pageUtil);
@@ -206,6 +208,7 @@ public class BlogServiceImpl implements BlogService {
         if (!CollectionUtils.isEmpty(blogs)) {
             for (Blog blog : blogs) {
                 SimpleBlogListVO simpleBlogListVO = new SimpleBlogListVO();
+                //将Blog对象转换成SimpleBlogListVo对象
                 BeanUtils.copyProperties(blog, simpleBlogListVO);
                 simpleBlogListVOS.add(simpleBlogListVO);
             }
@@ -312,9 +315,10 @@ public class BlogServiceImpl implements BlogService {
             //在此进行更新博客的内容，即将浏览量进行增加
             blogMapper.updateByPrimaryKey(blog);
             BlogDetailVO blogDetailVO = new BlogDetailVO();
-            //BeanUtil是一个工具类，该方法是实现对象的拷贝，将blogDetailVO的值copy到blog中
+            //BeanUtil是一个工具类，该方法是实现对象的拷贝，将blog对象赋值到blogDetailVO对象中
             BeanUtils.copyProperties(blog, blogDetailVO);
             blogDetailVO.setBlogContent(MarkDownUtil.mdToHtml(blogDetailVO.getBlogContent()));
+            //根据博客分类id进行查找分类名称
             BlogCategory blogCategory = categoryMapper.selectByPrimaryKey(blog.getBlogCategoryId());
             if (blogCategory == null) {
                 blogCategory = new BlogCategory();
@@ -333,6 +337,7 @@ public class BlogServiceImpl implements BlogService {
             Map params = new HashMap();
             params.put("blogId", blog.getBlogId());
             params.put("commentStatus", 1);//过滤审核通过的数据，1代表审核通过
+            //获取评论的次数
             blogDetailVO.setCommentCount(blogCommentMapper.getTotalBlogComments(params));
             return blogDetailVO;
         }
@@ -345,8 +350,10 @@ public class BlogServiceImpl implements BlogService {
             List<Integer> categoryIds = blogList.stream().map(Blog::getBlogCategoryId).collect(Collectors.toList());
             Map<Integer, String> blogCategoryMap = new HashMap<>();
             if (!CollectionUtils.isEmpty(categoryIds)) {
+                //根据id值查询博客属于哪个分类类别
                 List<BlogCategory> blogCategories = categoryMapper.selectByCategoryIds(categoryIds);
                 if (!CollectionUtils.isEmpty(blogCategories)) {
+                    //根据分类id获取分类图标
                     blogCategoryMap = blogCategories.stream().collect(Collectors.toMap(BlogCategory::getCategoryId, BlogCategory::getCategoryIcon, (key1, key2) -> key2));
                 }
             }

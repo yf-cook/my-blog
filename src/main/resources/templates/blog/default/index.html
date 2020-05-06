@@ -118,6 +118,23 @@
                         </ul>
                     </div>
                 </div>
+
+                <div class="aside-widget">
+                    <header>
+                        <h3>在线工具</h3>
+                    </header>
+                    <div class="body clearfix">
+                        <ul class="tags">
+                            <th:block th:if="${null != blogTools}">
+                                <th:block th:each="blogTool : ${blogTools}">
+                                    <li><a th:href="@{${blogTool.toolUrl}}" target="_blank">
+                                        <th:block th:text="${blogTool.toolName}"></th:block>
+                                    </a></li>
+                                </th:block>
+                            </th:block>
+                        </ul>
+                    </div>
+                </div>
             </aside>
         </div>
     </div>

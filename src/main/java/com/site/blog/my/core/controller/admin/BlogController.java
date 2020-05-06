@@ -56,6 +56,7 @@ public class BlogController {
     @GetMapping("/blogs/edit")
     public String edit(HttpServletRequest request) {
         request.setAttribute("path", "edit");
+        //获取所有的博客分类
         request.setAttribute("categories", categoryService.getAllCategories());
         return "admin/edit";
     }

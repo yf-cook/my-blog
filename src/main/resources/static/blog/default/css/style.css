@@ -6,7 +6,7 @@ body {
     background-color: #fff;
     /*padding: 0px 0px;*/
     background-color: #ddd;
-    background: url(../img/bg.jpg) no-repeat;
+    /*background: url(../img/bg.jpg) no-repeat;*/
     background-size: cover;
     background-attachment: fixed;
     word-break: break-all;

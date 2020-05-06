@@ -29,6 +29,12 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    public BlogCategory selectById(Integer id) {
+        BlogCategory blogCategory = blogCategoryMapper.selectByPrimaryKey(id);
+        return blogCategory;
+    }
+
+    @Override
     public int getTotalCategories() {
         return blogCategoryMapper.getTotalCategories(null);
     }
