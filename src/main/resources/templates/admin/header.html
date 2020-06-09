@@ -32,6 +32,14 @@
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
         <li class="nav-item dropdown">
+            <a class="nav-link" th:href="@{/admin/comments}">
+                <i class="fa fa-bell">
+                    <span th:text="${session.noReadNums}" style="color: red;"></span>
+                </i>
+            </a>
+        </li>
+
+        <li class="nav-item dropdown">
             <a class="nav-link" th:href="@{/}">
                 <i class="fa fa-paper-plane">&nbsp;&nbsp;博客首页</i>
             </a>
@@ -43,7 +51,7 @@
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                 <div class="dropdown-divider"></div>
                 <a href="#" class="dropdown-item">
-                    <i class="fa fa-user-o mr-2"></i> 姓名
+                    <i class="fa fa-heartbeat mr-2"></i> 姓名
                     <span class="float-right text-muted text-sm">YF-cook</span>
                 </a>
                 <div class="dropdown-divider"></div>
@@ -53,7 +61,7 @@
                 </a>
                 <div class="dropdown-divider"></div>
                 <a href="#" class="dropdown-item">
-                    <i class="fa fa-address-card mr-2"></i> 邮箱
+                    <i class="fa fa-envelope mr-2"></i> 邮箱
                     <span class="float-right text-muted text-sm">252065840@qq.com</span>
                 </a>
             </div>

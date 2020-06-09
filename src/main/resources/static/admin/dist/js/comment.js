@@ -87,7 +87,8 @@ function checkDoneComments() {
                             swal("审核成功", {
                                 icon: "success",
                             });
-                            $("#jqGrid").trigger("reloadGrid");
+                            // $("#jqGrid").trigger("reloadGrid");
+                            window.location.href='/admin/comments';
                         } else {
                             swal(r.message, {
                                 icon: "error",

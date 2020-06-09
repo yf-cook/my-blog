@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<footer th:fragment="footer-fragment">
+<footer th:fragment="footer-fragment" role="contentinfo">
     <div class="widewrapper footer">
         <div class="container">
             <div class="row">
                 <div class="col-md-3 footer-widget">
-                    <h3><i class="fa fa-user"></i>About</h3>
+                    <h3><i class="fa fa-heart-o"></i>Hello Everyone</h3>
                     <p th:text="${configurations.get('footerAbout')}">your singal blog.</p>
                 </div>
 
@@ -20,7 +20,7 @@
                 </div>
 
                 <div class="col-md-3 footer-widget">
-                    <h3><i class="fa fa-arrow-circle-o-up"></i>Powered By</h3>
+                    <h3><i class="fa fa-github"></i>Follwe Me</h3>
                     <a th:href="${configurations.get('footerPoweredByURL')}">
                         <th:block th:text="${configurations.get('footerPoweredBy')}"></th:block>
                     </a>

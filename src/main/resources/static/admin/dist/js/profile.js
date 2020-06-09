@@ -13,9 +13,15 @@ $(function () {
                 data: params,
                 success: function (r) {
                     if (r == 'success') {
-                        alert('修改成功');
+                        swal('修改成功', {
+                            icon: 'success'
+                        });
+                        $("#updateUserNameButton").prop("disabled",false);
                     } else {
-                        alert('修改失败');
+
+                        swal('修改失败', {
+                            icon: 'error'
+                        });
                         $("#updateUserNameButton").prop("disabled",false);
                     }
                 }
@@ -29,6 +35,16 @@ $(function () {
         $("#updatePasswordButton").attr("disabled",true);
         var originalPassword = $('#originalPassword').val();
         var newPassword = $('#newPassword').val();
+        var againPassword = $('#againPassword').val();
+        if(newPassword != againPassword){
+            swal('两次输入密码不一致，重新输入', {
+                icon: 'error'
+            });
+            $('#updatePasswordButton').attr('disabled', false);
+            $('#newPassword').val('');
+            $('#againPassword').val('');
+            return;
+        }
         if (validPasswordForUpdate(originalPassword, newPassword)) {
             var params = $("#userPasswordForm").serialize();
             $.ajax({
@@ -38,10 +54,18 @@ $(function () {
                 success: function (r) {
                     console.log(r);
                     if (r == 'success') {
-                        alert('修改成功');
-                        window.location.href = '/admin/login';
+                        setTimeout(function(){//两秒后跳转
+                            swal('修改成功,两秒后跳转登录页面', {
+                                icon: 'success'
+                            });
+                            window.location.href = '/admin/login';
+                        },2000);
+
                     } else {
-                        alert('修改失败');
+                        swal('密码错误，修改失败', {
+                            icon: 'error'
+                        });
+                        $('#originalPassword').val('');
                         $("#updatePasswordButton").attr("disabled",false);
                     }
                 }

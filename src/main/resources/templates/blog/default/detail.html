@@ -27,8 +27,8 @@
     <div class="widewrapper masthead">
         <div class="container">
             <h3>
-                <a th:href="@{/index}" id="logo" th:text="${configurations.get('websiteName')}">
-                    Personal Blogs
+                <a th:href="@{/index}" id="logo" th:text="${configurations.get('websiteName')}" style="color: #eeeeff;">
+                    首页
                 </a>
             </h3>
             <div id="mobile-nav-toggle" class="pull-right">
@@ -63,7 +63,7 @@
     <div class="widewrapper subheader">
         <div class="container">
             <div class="clean-breadcrumb">
-                <img th:src="@{${blogDetailVO.blogCategoryIcon}}" style=" margin-top: -4px;height: 16px;width: 16px;"
+                <img th:src="@{${blogDetailVO.blogCategoryIcon}}" style=" margin-top: -4px;height: 16px;width: 16px; background-color: #eeeeff"
                      alt="my personal blog">
                 <a href="#">&nbsp;<th:block th:text="${blogDetailVO.blogCategoryName}"></th:block>
                 </a>
@@ -175,49 +175,69 @@
                     </th:block>
                 </aside>
                 <th:block th:if="${blogDetailVO.enableComment==0}">
-
-                <aside class="create-comment" id="create-comment">
-                    <hr>
-                    <h2><i class="fa fa-pencil"></i> 添加评论</h2>
-                    <form action="#" method="get" onsubmit="return false;" accept-charset="utf-8">
-                        <input type="hidden" id="blogId" name="blogId" th:value="${blogDetailVO.blogId}"></input>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <input type="text" name="commentator" id="commentator" placeholder="(*必填)怎么称呼你?"
-                                       class="form-control input-lg">
-                            </div>
-                            <div class="col-md-6">
-                                <input type="email" name="email" id="email" placeholder="(*必填)你的联系邮箱"
-                                       class="form-control input-lg">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <input type="text" name="websiteUrl" id="websiteUrl" placeholder="你的网站地址(可不填)"
-                                       class="form-control input-lg">
-                            </div>
-                            <div class="col-md-6">
-                                <div class="col-md-4">
-                                    <img alt="单击图片刷新！" class="pointer" style="margin-top: 15px; border-radius: 25px;"
-                                         th:src="@{/common/kaptcha}"
-                                         onclick="this.src='/common/kaptcha?d='+new Date()*1">
-                                </div>
-                                <div class="col-md-8">
-                                    <input type="text" class="form-control input-lg" name="verifyCode" id="verifyCode"
-                                           placeholder="(*必填)请输入验证码"
-                                           required="true">
-                                </div>
-                            </div>
-                        </div>
-                        <textarea rows="10" name="commentBody" id="commentBody" placeholder="(*必填)请输入你的评论"
-                                  class="form-control input-lg"></textarea>
-
-                        <div class="buttons clearfix">
-                            <button type="submit" id="commentSubmit" class="btn btn-xlarge btn-clean-one">提交</button>
-                        </div>
-                    </form>
-                </aside>
+                    <div class="container">
+                        <button class="btn btn-info" style="text-align: center;" onclick="commentAdd()"><i
+                                class="fa fa-plus"></i>&nbsp;添加评论
+                        </button>
+                    </div>
                 </th:block>
+                <!--模态框-->
+                <div class="content">
+                    <div class="modal fade" id="commentModal" tabindex="-1" role="dialog" aria-labelledby="commentModalLable">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    <h5 class="modal-title" id="commentModalLable">Modal</h5>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="commentForm">
+                                        <input type="hidden" id="blogId" name="blogId" th:value="${blogDetailVO.blogId}"></input>
+                                        <div class="form-group">
+                                            <input type="text" name="commentator" id="commentator" placeholder="(*必填)怎么称呼你?"
+                                                   class="form-control input-lg">
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="email" name="email" id="email" placeholder="(*必填)你的联系邮箱"
+                                                   class="form-control input-lg">
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" name="websiteUrl" id="websiteUrl" placeholder="你的网站地址(可不填)"
+                                                   class="form-control input-lg">
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <img alt="单击图片刷新！" class="pointer"
+                                                         style="margin-top: 15px; border-radius: 25px;"
+                                                         th:src="@{/common/kaptcha}"
+                                                         onclick="this.src='/common/kaptcha?d='+new Date()*1">
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <input type="text" class="form-control input-lg" name="verifyCode"
+                                                           id="verifyCode"
+                                                           placeholder="(*必填)请输入验证码"
+                                                           required="true">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                                <textarea rows="10" name="commentBody" id="commentBody" placeholder="(*必填)请输入你的评论"
+                                                          class="form-control input-lg"></textarea>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                    <button type="button" class="btn btn-primary" id="commentSubmit">确认</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <!--小火箭-->
                 <p class="back-top" id="back-top" style="display:none"><a href="#top"><span></span></a></p>
             </div>
@@ -258,7 +278,7 @@
         });
 
         //创建博客目录
-        createBlogDirectory("blog-content", "h2", "h3", 20);
+        //createBlogDirectory("blog-content", "h2", "h3", 20);
     });
 </script>
 </body>

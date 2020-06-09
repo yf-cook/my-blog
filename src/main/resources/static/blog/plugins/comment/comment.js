@@ -1,3 +1,11 @@
+
+
+function commentAdd() {
+    reset();
+    $('.modal-title').html('添加评论');
+    $('#commentModal').modal('show');
+}
+
 $('#commentSubmit').click(function () {
     var blogId = $('#blogId').val();
     var verifyCode = $('#verifyCode').val();
@@ -11,14 +19,14 @@ $('#commentSubmit').click(function () {
         });
         return;
     }
-    if (isNull(commentator)) {
-        swal("请输入你的称呼", {
+    if (isNull(commentator) || !validCN_ENString2_100(commentator)) {
+        swal("请输入正确的称呼", {
             icon: "warning",
         });
         return;
     }
-    if (isNull(email)) {
-        swal("请输入你的邮箱", {
+    if (isNull(email) || !validEmail(email)) {
+        swal("请输入正确的邮箱", {
             icon: "warning",
         });
         return;
@@ -29,18 +37,7 @@ $('#commentSubmit').click(function () {
         });
         return;
     }
-    if (!validCN_ENString2_100(commentator)) {
-        swal("请输入符合规范的名称(不要输入特殊字符)", {
-            icon: "warning",
-        });
-        return;
-    }
-    // if (!validCN_ENString2_100(commentBody)) {
-    //     swal("请输入符合规范的评论内容(不要输入特殊字符)", {
-    //         icon: "warning",
-    //     });
-    //     return;
-    // }
+
     var data = {
         "blogId": blogId, "verifyCode": verifyCode, "commentator": commentator,
         "email": email, "websiteUrl": websiteUrl, "commentBody": commentBody
@@ -52,6 +49,7 @@ $('#commentSubmit').click(function () {
         data: data,
         success: function (result) {
             if (result.resultCode == 200) {
+                $('#commentModal').modal('hide');
                 swal("评论提交成功请等待博主审核", {
                     icon: "success",
                 });
@@ -59,6 +57,7 @@ $('#commentSubmit').click(function () {
                 $('#verifyCode').val('');
             }
             else {
+                $('#commentModal').modal('hide');
                 swal(result.message, {
                     icon: "error",
                 });
@@ -72,3 +71,11 @@ $('#commentSubmit').click(function () {
         }
     });
 });
+
+function reset() {
+    $('#verifyCode').val('');
+    $('#commentator').val('');
+    $('#email').val('');
+    $('#websiteUrl').val('');
+    $('#commentBody').val('');
+}

@@ -39,3 +39,17 @@ function validCN_ENString2_100(str) {
         return (false);
     }
 }
+
+/**
+ * 正则匹配邮箱
+ * @param email
+ * @returns {boolean}
+ */
+function validEmail(email) {
+    var str = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
+    if(str.test(email)){
+        return (true);
+    }else{
+        return (false);
+    }
+}

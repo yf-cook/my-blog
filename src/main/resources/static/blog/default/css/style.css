@@ -97,14 +97,14 @@ hr {
 }
 
 .widewrapper.masthead {
-    background-color: #fff;
-    color: #f8f8f9;
+    background-color: #333;
+    color: #eeeeff;
     border-bottom: #aaa;
 }
 
 .widewrapper.subheader {
-    background-color: #f1f1f1;
-    color: #444;
+    background-color: #333;
+    color: #fff0ff;
     font-size: 16px;
     min-height: 63px;
     border-top: 1px solid #ddd;
@@ -309,7 +309,7 @@ hr {
 }
 
 .clean-nav .nav-pills > li > a {
-    color: #444;
+    color: #eeeeff;
     padding: 11px 0 11px 20px;
     line-height: 14px;
 }
@@ -529,13 +529,13 @@ hr {
 }
 
 .clean-breadcrumb {
-    color: #7b8690;
+    color: #eeeeff;
     float: left;
     margin-top: 19px;
 }
 
 .clean-breadcrumb a {
-    color: #7b8690;
+    color: #eeeeff;
 }
 
 .clean-breadcrumb a:hover,
@@ -579,6 +579,7 @@ hr {
 
 .clean-searchbox .searchbutton {
     display: inline-block;
+    background-color: #333;
     border: none;
     line-height: 20px;
     height: 31px;
